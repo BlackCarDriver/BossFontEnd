@@ -5,10 +5,11 @@
   ],
   "env": {
     "browser": true,
-    "node": true,
+    "node": true
   },
   "globals": {  // 在这里声明的变量不会被no-undef规则警告
     "require": "readonly",
+    "Map": "readonly"
     // "console": "readonly"
   },
   "parser": "babel-eslint",
