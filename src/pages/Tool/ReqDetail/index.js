@@ -13,6 +13,7 @@ class ReqDetail extends Component {
   }
   componentDidMount = () => {
     console.debug('init success')
+    console.debug('props3', this.props)
   }
 
   // 调用 model 处理函数

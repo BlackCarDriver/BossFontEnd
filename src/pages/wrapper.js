@@ -1,30 +1,12 @@
 /* eslint-disable quotes */
 import React, { Component } from 'react'
-import { connect } from 'dva'
 import { Menu, Layout, Switch, Card } from 'antd'
-
-import { Route, Link, Redirect, Switch as Switch2 } from 'dva/router'
 import { getIconByName } from '../common/utils/antIcon'
-
-
-// 菜单配置，导航栏和路由组件根据此来动态生成
-const meamData = [
-  {dir: 'Tool', title:'实用工具', icon:'AppstoreOutlined',
-    childs:[
-      {dir:'NetDish', title: '私人网盘', icon: 'CloudUploadOutlined', compoment: require('./Tool/NetDish').default},
-      {dir: 'ReqDetail', title: '请求信息', icon: 'AimOutlined', compoment: require('./Tool/ReqDetail').default}
-    ]},
-  {dir: 'Monitor', title: '实时数据', icon:'StockOutlined',
-    childs:[
-      {dir: 'ServerBurden', title: '机器负载', icon: 'DashboardOutlined', compoment: require('./Monitor/ServerBurden').default},
-      {dir:'ServerLog', title: '运行日志', icon: 'FileTextOutlined', compoment: require('./Monitor/ServerLog').default}
-    ]},
-  {dir: 'notfound', title: '测试页面', compoment: require('./notfound').default}
-]
+import { Link } from 'dva/router'
 
 class Wrapper extends Component {
     componentDidMount = () => {
-      this.updateMeamData()
+      this.getMenuData()
       console.debug('props=', this.props)
       console.debug('history2=', this.props.history)
     }
@@ -32,7 +14,7 @@ class Wrapper extends Component {
       carTitle: 'Welcome',
       theme: 'dark',
       current: '1',
-      meam: [],
+      menuData: [],
     }
 
     // 改变导航栏风格
@@ -43,96 +25,50 @@ class Wrapper extends Component {
     onSelectMeanItem = (item) => {
       console.debug(item)
       if (item.keyPath == null || item.keyPath.length === 0) {
-        return
-      }
-      let selectItem = this.getMeamByKey(item.keyPath[0])
-      if (selectItem == null) {
-        return
-      }
-      this.setState({carTitle: selectItem.desc})
-    }
-    // 初始化state.meam
-    updateMeamData = () => {
-      const { match } = this.props
-      const baseURL = match.path
-      let meam = meamData
-      const rootPath = '../pages'
-      let keyVal = 1
-      for (let i = 0; i < meam.length; i++){
-        meam[i].key = keyVal ++
-        if (meam[i].childs == null) {
-          meam[i].desc = meam[i].title // 面包屑显示的内容
-          meam[i].uri = `${baseURL}/${meam[i].dir}` // 显示组件的路由
-          meam[i].path = `${rootPath}/${meam[i].dir}` // 组件加载的位置
-          continue
-        }
-        for (let j = 0; j < meam[i].childs.length; j++) { // 子菜单
-          meam[i].childs[j].key = keyVal ++
-          meam[i].childs[j].desc = `${meam[i].title} / ${meam[i].childs[j].title}`
-          meam[i].childs[j].uri = `${baseURL}/${meam[i].dir}/${meam[i].childs[j].dir}`
-          meam[i].childs[j].path = `${rootPath}/${meam[i].dir}/${meam[i].childs[j].dir}`
-        }
-      }
-      console.debug('meam=', meam)
-      this.setState({meam: meam})
-    }
-    // 获取特定key值的meam元素
-    getMeamByKey = (key) => {
-      const {meam} = this.state
-      for (let i = 0; i < meam.length; i++){
-        if (meam[i].key == key) {
-          return meam[i]
-        }
-        if (meam[i].childs == null) {
-          continue
-        }
-        for (let j = 0; j < meam[i].childs.length; j++) {
-          if (meam[i].childs[j].key == key) {
-            return meam[i].childs[j]
-          }
-        }
-      }
-      return null
-    }
-    // 动态加载组件
-    dynicLoad = (path, loading = '加载中') => {
-      return class AsyncComponent extends React.Component {
-          state = {
-            Child: null
-          }
-          async componentDidMount () {
-            const { Child } = React.lazy(() => import(path))
-            console.debug('path=', path, 'child=', Child)
-            this.setState({ Child })
-          }
-          render () {
-            const { Child } = this.state
-            return Child ? <Child {...this.props} /> : loading
-          }
+
       }
     }
+    // Conversion router to menu.
+    formatter = (data, parentPath = '') => {
+      return data.filter(item => item.name).map(item => {
+        const result = {
+          ...item,
+        }
+        if (item.routes) {
+          const children = this.formatter(item.routes, `${parentPath}${item.path}/`, item.authority)
+          // Reduce memory usage
+          result.children = children
+        }
+        delete result.routes
+        return result
+      })
+    }
+    getMenuData () {
+      const {
+        route: { routes }
+      } = this.props
+      let menu = this.formatter(routes)
+      console.debug('menu=', menu)
+      this.setState({menuData: menu})
+    }
+    // 动态生成菜单栏
     // 动态创建导航栏菜单
     creatMeamBar = () => {
       console.debug('creatMeamBar call')
       const { SubMenu } = Menu
-      let {meam} = this.state
+      let {menuData} = this.state
+      let key = 1
       return(
       <>
       {
-        meam.map((item) => {
-          if (item.childs == null){
+        menuData.map((item) => {
+          if (item.children != null){
             return (
-              <Menu.Item key={item.key} title={item.title} icon={getIconByName(item.icon)}>
-                <Link to={item.uri}>{item.title}</Link>
-              </Menu.Item>
-            )
-          } else {
-            return (
-              <SubMenu key={item.key} title={item.title} icon={getIconByName(item.icon)}>
-                { item.childs.map((subitem) => {
+              <SubMenu key={key++} title={item.name} icon={getIconByName(item.icon)}>
+                { item.children.map((subitem) => {
                   return(
-                    <Menu.Item key={subitem.key} icon={getIconByName(subitem.icon)}>
-                      <Link to={subitem.uri}>{subitem.title}</Link>
+                    <Menu.Item key={key++} title={subitem.name} icon={getIconByName(subitem.icon)} >
+                      <Link to={subitem.path}>{subitem.name}</Link>
                     </Menu.Item>
                   )
                 }) }
@@ -142,27 +78,6 @@ class Wrapper extends Component {
         })
       }
       </>
-      )
-    }
-    // 动态创建路由组件
-    createRouter = () => {
-      console.debug('createRouter called')
-      const { meam } = this.state
-      let tmpRender = (ary) => {
-        return ary.map((item) => {
-          return <Route key={item.key} path={item.uri} component={item.compoment} />
-        })
-      }
-      return (
-        <> {
-          meam.map((item) => {
-            if (item.childs == null) {
-              return <Route key={item.key} path={item.uri} component={item.compoment} />
-            } else {
-              return tmpRender(item.childs)
-            }
-          })
-        } </>
       )
     }
 
@@ -187,10 +102,7 @@ class Wrapper extends Component {
               <Content>
                 <div style={styleContent}>
                   <Card title={this.state.carTitle} bordered={false} headStyle={{font: 'left' ,height:'3em'}}>
-                    <Switch2>
-                      {this.createRouter()}
-                      <Redirect from='*' to={require('./notfound').default} />
-                    </Switch2>
+                    {this.props.children}
                   </Card>
                 </div>
               </Content>
