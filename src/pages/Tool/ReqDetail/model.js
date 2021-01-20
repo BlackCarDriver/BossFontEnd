@@ -1,7 +1,7 @@
 export default {
-  namespace: 'serverLog',
+  namespace: 'reqDetail',
   state: {
-    displayList: []
+    reqMsg: 'sss'
   },
 
   reducers: {

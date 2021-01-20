@@ -1,5 +1,5 @@
 export default {
-  namespace: 'serverLog',
+  namespace: 'serverBurden',
   state: {
     displayList: []
   },

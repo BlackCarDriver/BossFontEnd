@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 
-const namespace = 'serverLog'
+const namespace = 'netDish'
 
-@connect(({ serverLog }) => ({
-  model: serverLog
+@connect(({ netDish }) => ({
+  model: netDish
 }))
 
-class ServerLog extends Component {
+class NetDish extends Component {
   state = {
     title: 'SUCCESS'
   }
@@ -32,10 +32,11 @@ class ServerLog extends Component {
 
   render () {
     const { route } = this.props
+    console.debug('props2=', this.props)
     return (
       <h1>个人网盘</h1>
     )
   }
 }
 
-export default ServerLog
+export default NetDish

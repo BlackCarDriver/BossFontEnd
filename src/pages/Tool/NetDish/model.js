@@ -1,5 +1,5 @@
 export default {
-  namespace: 'serverLog',
+  namespace: 'netDish',
   state: {
     displayList: []
   },

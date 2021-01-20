@@ -1,9 +1,11 @@
 /* eslint-disable quotes */
 import React, { Component } from 'react'
+import { connect } from 'dva'
 import { Menu, Layout, Switch, Card } from 'antd'
 
 import { Route, Link, Redirect, Switch as Switch2 } from 'dva/router'
 import { getIconByName } from '../common/utils/antIcon'
+
 
 // 菜单配置，导航栏和路由组件根据此来动态生成
 const meamData = [
@@ -93,13 +95,14 @@ class Wrapper extends Component {
       return null
     }
     // 动态加载组件
-    dynicLoad = (loadComponent, loading = '加载中') => {
+    dynicLoad = (path, loading = '加载中') => {
       return class AsyncComponent extends React.Component {
           state = {
             Child: null
           }
           async componentDidMount () {
-            const { Child } = await loadComponent()
+            const { Child } = React.lazy(() => import(path))
+            console.debug('path=', path, 'child=', Child)
             this.setState({ Child })
           }
           render () {
@@ -207,7 +210,7 @@ const styleLogo = {
   width:'100%', height:'60px', overflow: 'hidden'
 }
 const styleContent = {
-  height:'100vh', marginTop: '2em'
+  marginTop: '2em'
 }
 const sytleImg = {
   height:'100%', width:'100%'

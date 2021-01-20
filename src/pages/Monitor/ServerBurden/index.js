@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 
-const namespace = 'serverLog'
+const namespace = 'serverBurden'
 
-@connect(({ serverLog }) => ({
-  model: serverLog
+@connect(({ serverBurden }) => ({
+  model: serverBurden
 }))
 
-class ServerLog extends Component {
+class ServerBurden extends Component {
   state = {
     title: 'SUCCESS'
   }
@@ -38,4 +38,4 @@ class ServerLog extends Component {
   }
 }
 
-export default ServerLog
+export default ServerBurden

@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 
-const namespace = 'serverLog'
+const namespace = 'reqDetail'
 
-@connect(({ serverLog }) => ({
-  model: serverLog
+@connect(({ reqDetail }) => ({
+  model: reqDetail
 }))
 
-class ServerLog extends Component {
+class ReqDetail extends Component {
   state = {
     title: 'SUCCESS'
   }
@@ -31,11 +31,14 @@ class ServerLog extends Component {
   }
 
   render () {
-    const { route } = this.props
+    console.debug('props=', this.props)
     return (
-      <h1>请求信息</h1>
+      <div>
+        <h1>请求信息</h1>
+        {/* <code>{reqMsg}</code> */}
+      </div>
     )
   }
 }
 
-export default ServerLog
+export default ReqDetail
