@@ -14,16 +14,17 @@ function snake2Pascal (snake) {
   return snake.split('/').map(item => item.split('_').map(word => word.charAt(0).toUpperCase() + word.substr(1)).join('')).join('/').replace(/-.*/, '')
 }
 
-function transformRoute (item, index, app, parentPath = '') {
+function transformRoute (item, index, app, parentPath = '', desc = '') {
   const { title, menuItemList, uri, icon } = item
   // 有子菜单的情况
   if (Array.isArray(menuItemList)) {
     const path = parentPath + '/' + index
     return {
       name: title,
+      desc: title,
       path,
       icon,
-      routes: menuItemList.map((item, index) => transformRoute(item, index, app, path))
+      routes: menuItemList.map((item, index) => transformRoute(item, index, app, path, title))
     }
   }
 
@@ -34,6 +35,7 @@ function transformRoute (item, index, app, parentPath = '') {
   console.debug('componentPath=', path)
   return {
     name: title,
+    desc: desc + ' > ' + title,
     path,
     uri,
     icon,
@@ -85,9 +87,10 @@ export default rawRoutes => ({ history, app }) => {
         {
           path: '/home',
           exact: true,
-          component: require('./pages/Tool/ReqDetail').default
+          component: require('./pages/home').default
         },
         {
+          path: '*',
           component: require('./pages/notfound').default
         }
       ]
@@ -95,7 +98,7 @@ export default rawRoutes => ({ history, app }) => {
   ]
 
   return (
-    <Router history={history}>
+    <Router history={history} basename='/boss'>
       {renderRoutes(routes)}
     </Router>
   )

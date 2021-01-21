@@ -1,3 +1,5 @@
+import { query } from '../../../common/services/example'
+
 export default {
   namespace: 'reqDetail',
   state: {
@@ -13,10 +15,9 @@ export default {
 
   effects: {
     * queryList ({ params }, { select, call, put }) {
-      yield put({
-        type: 'updateState',
-        payload: { name: 'displayList', newValue: [] }
-      })
+      let res = yield query()
+      console.debug('res=', res)
     }
+
   }
 }

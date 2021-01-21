@@ -1,5 +1,7 @@
 {
+  "name": "boss",
   "private": true,
+  "proxy": "http://localhost:81",
   "scripts": {
     "start": "roadhog server",
     "build": "roadhog build",
@@ -24,6 +26,5 @@
     "husky": "^0.12.0",
     "redbox-react": "^1.4.3",
     "roadhog": "^2.5.0-beta.4"
-  },
-  "proxy": "http://localhost:80"
+  }
 }

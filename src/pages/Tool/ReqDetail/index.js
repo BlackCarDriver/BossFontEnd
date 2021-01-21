@@ -12,8 +12,8 @@ class ReqDetail extends Component {
     title: 'SUCCESS'
   }
   componentDidMount = () => {
-    console.debug('init success')
     console.debug('props3', this.props)
+    this.callModel('queryList')
   }
 
   // 调用 model 处理函数

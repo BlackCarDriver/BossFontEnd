@@ -1,2 +1,16 @@
 {
+"extraBabelPlugins": [
+    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }]
+],
+"env": {
+    "development": {},
+    "production": {}
+},
+"proxy": {
+  "/bsapi": {
+    "target": "http://localhost:80/bsapi/",
+    "changeOrigin": true,
+    "pathRewrite": { "^/bsapi" : "" }
+  }
+}
 }

@@ -68,7 +68,7 @@ class Wrapper extends Component {
                 { item.children.map((subitem) => {
                   return(
                     <Menu.Item key={key++} title={subitem.name} icon={getIconByName(subitem.icon)} >
-                      <Link to={subitem.path}>{subitem.name}</Link>
+                      <Link to={subitem.path} onClick={() => {this.setState({carTitle: subitem.desc})}}>{subitem.name}</Link>
                     </Menu.Item>
                   )
                 }) }
@@ -88,7 +88,7 @@ class Wrapper extends Component {
           <Layout>
             <Sider theme={this.state.theme} style={{ overflow: 'auto', minHeight: '100vh', position: 'fixed', left: 0}} >
               <div style={styleLogo}>
-                <img src='src/assets/logo.PNG' alt='logo' style={sytleImg} />
+                <img src='./assets/logo.PNG' alt='logo' style={sytleImg} />
               </div>
               <Menu theme={this.state.theme} mode='inline' onClick={this.onSelectMeanItem}>
                 <Menu.Item key='0'>
