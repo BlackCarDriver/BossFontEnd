@@ -6,29 +6,25 @@ import { Link } from 'dva/router'
 
 class Wrapper extends Component {
     componentDidMount = () => {
-      this.getMenuData()
+      this.initMeanuData()
+      this.initcarTitle()
       console.debug('props=', this.props)
       console.debug('history2=', this.props.history)
     }
     state = {
-      carTitle: 'Welcome',
       theme: 'dark',
       current: '1',
       menuData: [],
+      carTitle: 'Welcome',
+      openMenu: '', // 默认展开的菜单
+      selectMenu: '', // 默认选中的菜单
     }
 
     // 改变导航栏风格
     changeTheme = value => {
       this.setState({ theme: value ? 'dark' : 'light'})
     }
-    // 选中导航栏功能菜单
-    onSelectMeanItem = (item) => {
-      console.debug(item)
-      if (item.keyPath == null || item.keyPath.length === 0) {
-
-      }
-    }
-    // Conversion router to menu.
+    // 将路由转换成菜单
     formatter = (data, parentPath = '') => {
       return data.filter(item => item.name).map(item => {
         const result = {
@@ -36,48 +32,62 @@ class Wrapper extends Component {
         }
         if (item.routes) {
           const children = this.formatter(item.routes, `${parentPath}${item.path}/`, item.authority)
-          // Reduce memory usage
           result.children = children
         }
         delete result.routes
         return result
       })
     }
-    getMenuData () {
+    // 初始化state.menuData
+    initMeanuData = () => {
       const {
         route: { routes }
       } = this.props
       let menu = this.formatter(routes)
-      console.debug('menu=', menu)
       this.setState({menuData: menu})
     }
-    // 动态生成菜单栏
+    // 更新或初始化标题，展开和选中的菜单
+    initcarTitle = () => {
+      const { pathname } = this.props.location
+      console.debug('pathname=', pathname)
+      let eles = pathname.split('/')
+      if (eles.length >= 2) {
+        this.setState({openMenu: eles[1]})
+        this.setState({selectMenu: pathname})
+      }
+    }
+
     // 动态创建导航栏菜单
     creatMeamBar = () => {
       console.debug('creatMeamBar call')
-      const { SubMenu } = Menu
-      let {menuData} = this.state
-      let key = 1
+      let { SubMenu } = Menu
+      const {menuData, openMenu, selectMenu, theme} = this.state
+      console.debug('meanData=', menuData)
+      let key = 0
       return(
-      <>
-      {
-        menuData.map((item) => {
-          if (item.children != null){
-            return (
-              <SubMenu key={key++} title={item.name} icon={getIconByName(item.icon)}>
-                { item.children.map((subitem) => {
-                  return(
-                    <Menu.Item key={key++} title={subitem.name} icon={getIconByName(subitem.icon)} >
-                      <Link to={subitem.path} onClick={() => {this.setState({carTitle: subitem.desc})}}>{subitem.name}</Link>
-                    </Menu.Item>
-                  )
-                }) }
-              </SubMenu>
-            )
+        // TODO: why defaultOpenKeys not working?
+        <Menu theme={theme} mode='inline' multiple={false} defaultOpenKeys={[openMenu]} defaultSelectedKeys={[selectMenu]}>
+          <Menu.Item key='-1'>
+            <Switch checked={this.state.theme === 'dark'} onChange={this.changeTheme} checkedChildren='Dark' unCheckedChildren='Light'/>
+          </Menu.Item>
+          {
+            menuData.map((item) => {
+              if (item.children != null){
+                return (
+                  <SubMenu key={'' + key++} title={item.name} icon={getIconByName(item.icon)}>
+                    { item.children.map((subitem) => {
+                      return(
+                        <Menu.Item key={subitem.path} title={subitem.name} icon={getIconByName(subitem.icon)} >
+                          <Link to={subitem.path} onClick={() => {this.setState({carTitle: subitem.desc})}}>{subitem.name}</Link>
+                        </Menu.Item>
+                      )
+                    }) }
+                  </SubMenu>
+                )
+              }
+            })
           }
-        })
-      }
-      </>
+        </Menu>
       )
     }
 
@@ -88,14 +98,9 @@ class Wrapper extends Component {
           <Layout>
             <Sider theme={this.state.theme} style={{ overflow: 'auto', minHeight: '100vh', position: 'fixed', left: 0}} >
               <div style={styleLogo}>
-                <img src='./assets/logo.PNG' alt='logo' style={sytleImg} />
+                <a href='/'><img src='./assets/logo.PNG' alt='logo' style={sytleImg} /></a>
               </div>
-              <Menu theme={this.state.theme} mode='inline' onClick={this.onSelectMeanItem}>
-                <Menu.Item key='0'>
-                  <Switch checked={this.state.theme === 'dark'} onChange={this.changeTheme} checkedChildren='Dark' unCheckedChildren='Light'/>
-                </Menu.Item>
-                {this.creatMeamBar()}
-              </Menu>
+              {this.creatMeamBar()}
             </Sider>
 
             <Layout style={{height:'100vh', padding:'0 24px 0 224px'}}>

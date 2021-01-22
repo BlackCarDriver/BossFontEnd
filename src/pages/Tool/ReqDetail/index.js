@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
+import { List } from 'antd'
 
 const namespace = 'reqDetail'
 
@@ -33,10 +34,16 @@ class ReqDetail extends Component {
 
   render () {
     console.debug('props=', this.props)
+    const { reqMsg } = this.props.model
     return (
       <div>
-        <h1>请求信息</h1>
-        {/* <code>{reqMsg}</code> */}
+        <List itemLayout='horizontal' size='small' dataSource={reqMsg}
+          renderItem={item =>
+            <List.Item>
+              <List.Item.Meta title={item.key} description={item.value} />
+            </List.Item>
+          }
+        />
       </div>
     )
   }

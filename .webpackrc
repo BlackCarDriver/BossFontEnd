@@ -11,6 +11,11 @@
     "target": "http://localhost:80/bsapi/",
     "changeOrigin": true,
     "pathRewrite": { "^/bsapi" : "" }
+  },
+  "/static": {
+    "target": "http://localhost:80/static/",
+    "changeOrigin": true,
+    "pathRewrite": { "^/static" : "" }
   }
 }
 }
