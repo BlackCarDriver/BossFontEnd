@@ -98,7 +98,7 @@ class Wrapper extends Component {
           <Layout>
             <Sider theme={this.state.theme} style={{ overflow: 'auto', minHeight: '100vh', position: 'fixed', left: 0}} >
               <div style={styleLogo}>
-                <a href='/'><img src='./assets/logo.PNG' alt='logo' style={sytleImg} /></a>
+                <a href='/boss'><img src='./assets/logo.PNG' alt='logo' style={sytleImg} /></a>
               </div>
               {this.creatMeamBar()}
             </Sider>

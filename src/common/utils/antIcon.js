@@ -10,6 +10,8 @@ import {
   FileTextOutlined,
   AimOutlined,
   AppstoreOutlined,
+  PartitionOutlined,
+  SettingOutlined,
 } from '@ant-design/icons'
 
 
@@ -23,6 +25,8 @@ const iconMap = new Map(
     ['QuestionOutlined', <QuestionOutlined />],
     ['AimOutlined', <AimOutlined />],
     ['AppstoreOutlined', <AppstoreOutlined />],
+    ['SettingOutlined', <SettingOutlined />],
+    ['PartitionOutlined', <PartitionOutlined />],
   ]
 )
 

@@ -19,6 +19,11 @@ let menuList = [{
     { uri: '/tool/netDish', title:  '个人网盘', icon:'CloudUploadOutlined'},
   ]
 },{
+  title: '服务端配置', icon: 'SettingOutlined',
+  menuItemList:[
+    {uri: '/manage/ipWhiteList', title: 'IP白名单配置', icon: 'PartitionOutlined'},
+  ]
+},{
   title: '服务器监控', icon: 'DashboardOutlined',
   menuItemList: [
     { uri: '/monitor/serverBurden', title:  '系统负载' , icon:'DashboardOutlined'},

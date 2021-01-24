@@ -2,8 +2,8 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { timeFormater, sizeFormater } from '../../../common/utils/util'
-import { DeleteOutlined, CloudDownloadOutlined, EyeOutlined } from '@ant-design/icons'
-import { Tabs, Row, Col, Table, Tooltip, Popconfirm, message } from 'antd'
+import { DeleteOutlined, CloudDownloadOutlined, EyeOutlined, InboxOutlined } from '@ant-design/icons'
+import { Tabs, Row, Col, Table, Tooltip, Popconfirm, message, Upload, Progress, Divider, Tag } from 'antd'
 
 const namespace = 'netDish'
 
@@ -13,7 +13,10 @@ const namespace = 'netDish'
 
 class NetDish extends Component {
   state = {
-    title: 'SUCCESS'
+    uploadFileName: '',
+    uploadPersent: 0,
+    uploadStatus: '',
+    uploadMsg: '',
   }
   componentDidMount = () => {
     this.updateFilesList()
@@ -92,8 +95,36 @@ class NetDish extends Component {
 
   render () {
     const { TabPane } = Tabs
+    const { Dragger } = Upload
     const { displayData, currentPage, currentSize} = this.props.model
-
+    const {uploadFileName, uploadPersent, uploadStatus, uploadMsg } = this.state
+    const uploadProps = {
+      name: 'file',
+      multiple: false,
+      action: '/bsapi/tool/netdish/upload',
+      onChange: (info) => {
+        const { response, status, percent } = info.file
+        if (status === 'uploading') {
+          console.debug('uploading: info=', info)
+          this.setState({uploadFileName:info.file.name, uploadPersent: percent, uploadStatus: 'normal', uploadMsg:''})
+          return
+        }
+        if (status === 'done' && response != null ) {
+          if (response.status == 0){
+            message.success(`${info.file.name} uploaded successfully.`)
+            this.setState({uploadStatus: 'success'})
+          }else{
+            message.error(`${info.file.name} uploaded failed: msg=${response.msg}.`)
+            this.setState({uploadStatus: 'exception', uploadMsg: response.msg})
+          }
+          return
+        }
+        if (status === 'error') {
+          message.error(`${info.file.name} upload failed.`)
+          this.setState({uploadStatus: 'exception', uploadMsg: '?'})
+        }
+      },
+    }
     const columns = [
       { title: '序号', render: (text, record, index) => (currentPage - 1) * currentSize + index + 1 },
       { title: '文件名', dataIndex: 'fileName', align: 'center'},
@@ -119,7 +150,22 @@ class NetDish extends Component {
         </TabPane>
 
         <TabPane tab='上传文件' key='2'>
-        Content of Tab Pane 1
+          <Dragger {...uploadProps} style={{width:'100%'}}>
+            <p className='ant-upload-drag-icon'>
+              <InboxOutlined />
+            </p>
+            <p className='ant-upload-text'>将需要上传的文件拖动到这里</p>
+            <p className='ant-upload-hint'>
+      Support for a single or bulk upload. Strictly prohibit from uploading company data or other
+      band files
+            </p>
+            <div hidden={uploadFileName == ''}>
+              <Divider />
+              <Tag color='geekblue'>{uploadFileName}</Tag><br />
+              <Tag color='error' hidden={uploadMsg == ''}>{uploadMsg}</Tag><br/>
+              <Progress type='circle' percent={uploadPersent} status={uploadStatus} />
+            </div>
+          </Dragger>
         </TabPane>
 
       </Tabs>
