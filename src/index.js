@@ -29,6 +29,11 @@ let menuList = [{
     { uri: '/monitor/serverBurden', title:  '系统负载' , icon:'DashboardOutlined'},
     { uri: '/monitor/serverLog', title:  '服务端日志', icon:'FileTextOutlined' },
   ]
+},{
+  title: '其他工具', icon: 'CodeSandboxOutlined',
+  menuItemList: [
+    { uri: '/other/photoWhall', title:  '照片墙' , icon:'FileJpgOutlined'},
+  ]
 }]
 app.router(router(menuList))
 
