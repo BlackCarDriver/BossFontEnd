@@ -2,9 +2,7 @@
 import React, { Component } from 'react'
 import { Tabs, Input, Image, Row, Col, Select } from 'antd'
 
-const namespace = 'serverBurden'
-
-class ServerBurden extends Component {
+class PhotoWhall extends Component {
   state = {
     textAreaValue: 'http://www.blackcar.top/static/preview/%E8%A6%81%E9%A5%AD%E5%A4%B4%E5%83%8F.jpg\nhttps://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
     imgList : [],
@@ -81,7 +79,7 @@ class ServerBurden extends Component {
             {imgList.map((item, index) => {
               return(
                 <Col key={index} style={{margin:'15px 15px 0 0'}}>
-                  <Image width={imgWhite} height={imgWhite} src={item} placeholder={placeholderImg} fallback={placeholderUrl} style={{overflow:'hidden'}}/>
+                  <Image width={imgWhite} height={imgWhite} src={item} alt={item} placeholder={placeholderImg} fallback={placeholderUrl} style={{overflow:'hidden'}}/>
                 </Col>
               )
 
@@ -93,4 +91,4 @@ class ServerBurden extends Component {
   }
 }
 
-export default ServerBurden
+export default PhotoWhall

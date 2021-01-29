@@ -65,8 +65,7 @@ class Wrapper extends Component {
       console.debug('meanData=', menuData)
       let key = 0
       return(
-        // TODO: why defaultOpenKeys not working?
-        <Menu theme={theme} mode='inline' multiple={false} defaultOpenKeys={[openMenu]} defaultSelectedKeys={[selectMenu]}>
+        <Menu key={openMenu} theme={theme} mode='inline' multiple={false} defaultOpenKeys={[openMenu]} defaultSelectedKeys={[selectMenu]}>
           <Menu.Item key='-1'>
             <Switch checked={this.state.theme === 'dark'} onChange={this.changeTheme} checkedChildren='Dark' unCheckedChildren='Light'/>
           </Menu.Item>

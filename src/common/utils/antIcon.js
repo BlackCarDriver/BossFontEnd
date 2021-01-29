@@ -14,6 +14,8 @@ import {
   SettingOutlined,
   CodeSandboxOutlined,
   FileJpgOutlined,
+  PictureOutlined,
+  PaperClipOutlined,
 } from '@ant-design/icons'
 
 
@@ -31,6 +33,8 @@ const iconMap = new Map(
     ['PartitionOutlined', <PartitionOutlined />],
     ['CodeSandboxOutlined', <CodeSandboxOutlined />],
     ['FileJpgOutlined', <FileJpgOutlined />],
+    ['PictureOutlined', <PictureOutlined />],
+    ['PaperClipOutlined', <PaperClipOutlined />],
   ]
 )
 

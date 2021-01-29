@@ -32,6 +32,7 @@ let menuList = [{
 },{
   title: '其他工具', icon: 'CodeSandboxOutlined',
   menuItemList: [
+    { uri: '/other/devTool', title:  '开发工具' , icon:'PaperClipOutlined'},
     { uri: '/other/photoWhall', title:  '照片墙' , icon:'FileJpgOutlined'},
   ]
 }]
