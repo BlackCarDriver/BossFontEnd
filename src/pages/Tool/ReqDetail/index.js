@@ -13,8 +13,8 @@ class ReqDetail extends Component {
     title: 'SUCCESS'
   }
   componentDidMount = () => {
-    console.debug('props3', this.props)
     this.callModel('queryList')
+    console.debug(navigator.plugins)
   }
 
   // 调用 model 处理函数
@@ -35,9 +35,14 @@ class ReqDetail extends Component {
   render () {
     console.debug('props=', this.props)
     const { reqMsg } = this.props.model
+    let displayList = [
+      {key:'ScreenSize', value: `${screen.width}×${screen.height}`},
+      {key:'PlatForm', value: `${navigator.platform}`},
+    ]
+    displayList = displayList.concat(reqMsg)
     return (
       <div>
-        <List itemLayout='horizontal' size='small' dataSource={reqMsg}
+        <List itemLayout='horizontal' size='small' dataSource={displayList}
           renderItem={item =>
             <List.Item>
               <List.Item.Meta title={item.key} description={item.value} />

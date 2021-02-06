@@ -26,6 +26,7 @@ let menuList = [{
 },{
   title: '服务器监控', icon: 'DashboardOutlined',
   menuItemList: [
+    { uri: '/monitor/rpcOverview', title:  'RPC服务状况' , icon:'ShareAltOutlined'},
     { uri: '/monitor/serverBurden', title:  '系统负载' , icon:'DashboardOutlined'},
     { uri: '/monitor/serverLog', title:  '服务端日志', icon:'FileTextOutlined' },
   ]
