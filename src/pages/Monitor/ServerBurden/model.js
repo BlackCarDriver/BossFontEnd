@@ -1,7 +1,17 @@
+import { bossAPI } from '../../../common/services/common'
+import { timeFormater } from '../../../common/utils/util'
 export default {
   namespace: 'serverBurden',
   state: {
-    displayList: []
+    statType:'short',
+    keepRefresh: true,
+    sysStatInfo: [],
+    realTimeStat: {
+      cpuPercent: 0,
+      vmUsedPercent: 0,
+      avgLoad: 0,
+      dishPercent: 0,
+    }
   },
 
   reducers: {
@@ -13,9 +23,32 @@ export default {
 
   effects: {
     * queryList ({ params }, { select, call, put }) {
+      const { serverBurden } = yield select(state => state)
+      const { statType } = serverBurden
+      let res = yield call(bossAPI, `/monitor/sysStateInfo?type=${statType}`)
+      if (!res) {
+        yield put({
+          type: 'updateState',
+          payload: { name: 'keepRefresh', newValue: false }
+        })
+        return
+      }
+      for (let i = 0; i < res.length; i++){
+        res[i].key = i,
+        res[i].time = timeFormater(res[i].timestamp, 5)
+      }
       yield put({
         type: 'updateState',
-        payload: { name: 'displayList', newValue: [] }
+        payload: { name: 'sysStatInfo', newValue: res }
+      })
+      var realtime = {...res[res.length - 1]}
+      realtime.cpuPercent = parseFloat((realtime.cpuPercent / 100).toFixed(2))
+      realtime.vmUsedPercent = parseFloat((realtime.vmUsedPercent / 100).toFixed(2))
+      realtime.dishPercent = parseFloat((realtime.dishPercent / 100).toFixed(2))
+      realtime.avgLoad = parseFloat(realtime.avgLoad.toFixed(2))
+      yield put({
+        type: 'updateState',
+        payload: { name: 'realTimeStat', newValue: realtime }
       })
     }
   }

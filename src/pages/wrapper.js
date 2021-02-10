@@ -1,6 +1,6 @@
 /* eslint-disable quotes */
 import React, { Component } from 'react'
-import { Menu, Layout, Switch, Card } from 'antd'
+import { Menu, Layout, Switch, Card, Spin } from 'antd'
 import { getIconByName } from '../common/utils/antIcon'
 import { Link } from 'dva/router'
 
@@ -106,7 +106,9 @@ class Wrapper extends Component {
               <Content>
                 <div style={styleContent}>
                   <Card title={this.state.carTitle} bordered={false} headStyle={{font: 'left' ,height:'3em'}}>
-                    {this.props.children}
+                    <Spin spinning={this.props.children == null}>
+                      {this.props.children}
+                    </Spin>
                   </Card>
                 </div>
               </Content>

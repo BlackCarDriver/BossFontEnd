@@ -1,3 +1,5 @@
+import { Space, Typography, Select, Divider, Button, Row, Col, Card, Tag } from 'antd'
+import { Line, Gauge } from '@ant-design/charts'
 import React, { Component } from 'react'
 import { connect } from 'dva'
 
@@ -12,7 +14,17 @@ class ServerBurden extends Component {
     title: 'SUCCESS'
   }
   componentDidMount = () => {
-    console.debug('init success')
+    let autoRefresh = () => { // 每隔10s刷新数据
+      const {keepRefresh} = this.props.model
+      if (!keepRefresh) {
+        return
+      }
+      this.callModel('queryList', {})
+      setTimeout(() => {
+        autoRefresh()
+      }, 10000)
+    }
+    autoRefresh()
   }
 
   // 调用 model 处理函数
@@ -29,11 +41,89 @@ class ServerBurden extends Component {
       name: name, newValue: newValue
     })
   }
+  // 选择显示数据的类型
+  onSelectStateType = (value) => {
+    this.changeState('statType', value)
+    this.callModel('queryList', {})
+  }
 
   render () {
-    const { route } = this.props
+    const { sysStatInfo, realTimeStat} = this.props.model
+    const { Option } = Select
+    const { Text } = Typography
+    let LineConfig = {
+      data: sysStatInfo,
+      xField: 'time',
+      height: 200,
+      slider: {
+        start: 0.0,
+        end: 1.0,
+      },
+    }
+    let GaugeConfig = {
+      height: 100,
+      animation: false,
+      statistic: {
+        title: {
+          style: { fontSize: '20px', color: '#6395fa', },
+          formatter: (a) => { return a.percent * 100 + '%' },
+        },
+      },
+    }
+
     return (
-      <h1>系统负载</h1>
+      <Space direction='vertical' style={{width:'100%'}}>
+        <Row>
+          <Col>
+            <Select style={{width:'10em'}} defaultValue='short' onChange={(v) => this.onSelectStateType(v)}>
+              <Option key='short'>最近一小时</Option>
+              <Option key='long'>最近一周</Option>
+            </Select>
+          </Col>
+          <Col style={{marginLeft:'1em'}}>
+            <Button type='primary' onClick={() => this.callModel('queryList', {})}>刷新</Button>
+          </Col>
+        </Row>
+
+        <Text type='success'>实时指标</Text>
+        <Row>
+          <Col style={{ width: 200, marginLeft: '1em', padding:'1em' }}>
+            <Card>
+              <Gauge {...GaugeConfig} percent={realTimeStat.cpuPercent} />
+              <div style={{textAlign:'center', marginTop:'1em'}}><Tag color='lime'>CPU</Tag></div>
+            </Card>
+          </Col>
+          <Col style={{ width: 200, marginLeft: '1em', padding:'1em' }}>
+            <Card>
+              <Gauge {...GaugeConfig} percent={realTimeStat.vmUsedPercent} />
+              <div style={{textAlign:'center', marginTop:'1em'}}><Tag color='lime'>VM</Tag></div>
+            </Card>
+          </Col>
+          <Col style={{ width: 200, marginLeft: '1em', padding:'1em' }}>
+            <Card>
+              <Gauge {...GaugeConfig} percent={realTimeStat.dishPercent} />
+              <div style={{textAlign:'center', marginTop:'1em'}}><Tag color='lime'>Dish</Tag></div>
+            </Card>
+          </Col>
+          <Col style={{ width: 200, marginLeft: '1em', padding:'1em' }}>
+            <Card>
+              <Gauge {...GaugeConfig} percent={realTimeStat.avgLoad} />
+              <div style={{textAlign:'center', marginTop:'1em'}}><Tag color='lime'>Load</Tag></div>
+            </Card>
+          </Col>
+        </Row>
+
+        <Text type='success'>CPU负载 (%)</Text>
+        <Line {...LineConfig} yField='cpuPercent'/>
+        <Text type='success'>内存使用量 (%)</Text>
+        <Line {...LineConfig} yField='vmUsedPercent' />
+        <Text type='success'>系统负载</Text>
+        <Line {...LineConfig} yField='avgLoad' />
+        <Text type='success'>进程总数</Text>
+        <Line {...LineConfig} yField='procsTotal' />
+        <Text type='success'>磁盘使用量 (%)</Text>
+        <Line {...LineConfig} yField='dishPercent' />
+      </Space>
     )
   }
 }

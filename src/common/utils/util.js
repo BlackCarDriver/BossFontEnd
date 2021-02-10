@@ -49,6 +49,8 @@ export function timeFormater (time, style = 0) {
     return moment(time * 1000).format('YYYY年MM月DD日HH点')
   case 4:
     return moment(time * 1000).format('YYYY年MM月DD日HH:mm:ss')
+  case 5:
+    return moment(time * 1000).format('HH:mm:ss')
   }
   console.error('timeformater get invalid style: ', style)
   return '?' + time

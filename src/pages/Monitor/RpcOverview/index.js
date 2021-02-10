@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Divider, Card, Row, Col, Tag, Space, Button } from 'antd'
+import { Divider, Card, Row, Col, Tag, Space, Button, Empty} from 'antd'
 import { timeFormater } from '../../../common/utils/util'
 
 const namespace = 'rpcOverview'
@@ -63,7 +63,7 @@ class RpcOverview extends Component {
                       <Row><Tag>失败次数</Tag>: {item.failed}</Row>
                       <Row><Tag color={percent == 100 ? 'green' : percent < 90 ? 'red' : ''}>成功率</Tag>: %{percent}</Row>
                       <Row><Tag>注册时间</Tag>: {timeFormater(item.regTime)}</Row>
-                      <Row><Tag>上次调通时间</Tag>: {timeFormater(item.lastTime)}</Row>
+                      <Row><Tag>上次调用时间</Tag>: {timeFormater(item.lastTime)}</Row>
                     </Space>
                   </Card>
                 </Col>
@@ -81,6 +81,7 @@ class RpcOverview extends Component {
     return (
       <div>
         <Button type='primary' onClick={() => this.callModel('queryList')}>刷新</Button>
+        {displayList.length == 0 ? <Empty /> : ''}
         {displayList.map((value, index) => {
           return this.genOverviewHtml(value)
         })}
