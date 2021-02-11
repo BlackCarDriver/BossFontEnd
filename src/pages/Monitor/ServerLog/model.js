@@ -1,7 +1,9 @@
+import { bossAPI } from '../../../common/services/common'
+
 export default {
   namespace: 'serverLog',
   state: {
-    displayList: []
+    displayLog: []
   },
 
   reducers: {
@@ -12,10 +14,15 @@ export default {
   },
 
   effects: {
-    * queryList ({ params }, { select, call, put }) {
+    * queryList ({ payload }, { select, call, put }) {
+      console.debug('params=', payload)
+      let res = yield call(bossAPI, `/monitor/getServerLog?target=${payload}`)
+      if (!res) {
+        return
+      }
       yield put({
         type: 'updateState',
-        payload: { name: 'displayList', newValue: [] }
+        payload: { name: 'displayLog', newValue: res }
       })
     }
   }

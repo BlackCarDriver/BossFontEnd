@@ -2,6 +2,10 @@
 "extraBabelPlugins": [
     ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }]
 ],
+"externals": {
+  "react": "React",
+  "react-dom": "ReactDOM"
+},
 "env": {
     "development": {},
     "production": {}

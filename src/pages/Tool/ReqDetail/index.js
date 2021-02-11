@@ -36,7 +36,7 @@ class ReqDetail extends Component {
     console.debug('props=', this.props)
     const { reqMsg } = this.props.model
     let displayList = [
-      {key:'ScreenSize', value: `${screen.width}×${screen.height}`},
+      {key:'ScreenSize', value: `${window.screen.width}×${window.screen.height}`},
       {key:'PlatForm', value: `${navigator.platform}`},
     ]
     displayList = displayList.concat(reqMsg)

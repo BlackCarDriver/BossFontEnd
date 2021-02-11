@@ -93,7 +93,7 @@ class IpWhiteList extends Component {
           onConfirm={() => this.onComfirmDelTag(record)}>
           <a><DeleteOutlined style={{ color: '#ff3535', fontSize: '1.2em' }} /></a>
         </Popconfirm>
-     </>
+      </>
     )
   }
 

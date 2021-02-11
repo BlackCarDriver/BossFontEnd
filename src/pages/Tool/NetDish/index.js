@@ -73,22 +73,22 @@ class NetDish extends Component {
     let tipStr = `确定要将这个文件删除吗? (名称=${record.fileName})`
     return (
       <>
-      <Tooltip title='下载'>
-        <a href={`/bsapi/tool/netdish/fileOpe?opeType=download&fileName=${record.fileName}`}>
-          <CloudDownloadOutlined style={{ color: '#1890ff', fontSize: '1.2em', marginRight: '1em' }} />
-        </a>
-      </Tooltip>
-      <Tooltip title='预览'>
-        <a href={`/static/preview/${record.fileName}`} target='null'>
-          <EyeOutlined style={{ color: '#1890ff', fontSize: '1.2em', marginRight: '1em' }} />
-        </a>
-      </Tooltip>
-      <Tooltip title='删除'>
-        <Popconfirm placement='bottom' title={tipStr} okType='danger' okText='删除' cancelText='取消'
-          onConfirm={() => this.onComfirmDelFile(record)}>
-          <a href='#'><DeleteOutlined style={{ color: '#ff3535', fontSize: '1.2em' }} /></a>
-        </Popconfirm>
-      </Tooltip>
+        <Tooltip title='下载'>
+          <a href={`/bsapi/tool/netdish/fileOpe?opeType=download&fileName=${record.fileName}`}>
+            <CloudDownloadOutlined style={{ color: '#1890ff', fontSize: '1.2em', marginRight: '1em' }} />
+          </a>
+        </Tooltip>
+        <Tooltip title='预览'>
+          <a href={`/static/preview/${record.fileName}`} target='null'>
+            <EyeOutlined style={{ color: '#1890ff', fontSize: '1.2em', marginRight: '1em' }} />
+          </a>
+        </Tooltip>
+        <Tooltip title='删除'>
+          <Popconfirm placement='bottom' title={tipStr} okType='danger' okText='删除' cancelText='取消'
+            onConfirm={() => this.onComfirmDelFile(record)}>
+            <a href='#'><DeleteOutlined style={{ color: '#ff3535', fontSize: '1.2em' }} /></a>
+          </Popconfirm>
+        </Tooltip>
       </>
     )
   }

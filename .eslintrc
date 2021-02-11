@@ -12,6 +12,11 @@
     "Map": "readonly"
     // "console": "readonly"
   },
+  "settings": {
+    "react": {
+      "version": "17.0.1"
+    }
+  },
   "parser": "babel-eslint",
   "rules": {
 	  "react/prop-types": 0,

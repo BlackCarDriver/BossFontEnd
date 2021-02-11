@@ -35,17 +35,17 @@ export default {
       }
       for (let i = 0; i < res.length; i++){
         res[i].key = i,
-        res[i].time = timeFormater(res[i].timestamp, 5)
+        res[i].time = timeFormater(res[i].t, 5)
       }
       yield put({
         type: 'updateState',
         payload: { name: 'sysStatInfo', newValue: res }
       })
-      var realtime = {...res[res.length - 1]}
-      realtime.cpuPercent = parseFloat((realtime.cpuPercent / 100).toFixed(2))
-      realtime.vmUsedPercent = parseFloat((realtime.vmUsedPercent / 100).toFixed(2))
-      realtime.dishPercent = parseFloat((realtime.dishPercent / 100).toFixed(2))
-      realtime.avgLoad = parseFloat(realtime.avgLoad.toFixed(2))
+      let realtime = {...res[res.length - 1]}
+      realtime.c = parseFloat((realtime.c / 100).toFixed(2))
+      realtime.v = parseFloat((realtime.v / 100).toFixed(2))
+      realtime.d = parseFloat((realtime.d / 100).toFixed(2))
+      realtime.a = parseFloat(realtime.a.toFixed(2))
       yield put({
         type: 'updateState',
         payload: { name: 'realTimeStat', newValue: realtime }

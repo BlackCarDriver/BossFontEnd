@@ -1,7 +1,8 @@
-import { Space, Typography, Select, Divider, Button, Row, Col, Card, Tag } from 'antd'
-import { Line, Gauge } from '@ant-design/charts'
 import React, { Component } from 'react'
 import { connect } from 'dva'
+import { Space, Typography, Select, Button, Row, Col, Card, Tag } from 'antd'
+// import { Line, Gauge } from '@ant-design/charts'
+const { Line, Gauge } = window.charts
 
 const namespace = 'serverBurden'
 
@@ -51,8 +52,9 @@ class ServerBurden extends Component {
     const { sysStatInfo, realTimeStat} = this.props.model
     const { Option } = Select
     const { Text } = Typography
+    let sysStatInfo2 = sysStatInfo.sort((a, b) => {return a.t > b.t ? 1 : -1})
     let LineConfig = {
-      data: sysStatInfo,
+      data: sysStatInfo2,
       xField: 'time',
       height: 200,
       slider: {
@@ -66,7 +68,7 @@ class ServerBurden extends Component {
       statistic: {
         title: {
           style: { fontSize: '20px', color: '#6395fa', },
-          formatter: (a) => { return a.percent * 100 + '%' },
+          formatter: (a) => { return (a.percent * 100).toFixed(0) + '%' },
         },
       },
     }
@@ -89,40 +91,40 @@ class ServerBurden extends Component {
         <Row>
           <Col style={{ width: 200, marginLeft: '1em', padding:'1em' }}>
             <Card>
-              <Gauge {...GaugeConfig} percent={realTimeStat.cpuPercent} />
+              <Gauge {...GaugeConfig} percent={realTimeStat.c} />
               <div style={{textAlign:'center', marginTop:'1em'}}><Tag color='lime'>CPU</Tag></div>
             </Card>
           </Col>
           <Col style={{ width: 200, marginLeft: '1em', padding:'1em' }}>
             <Card>
-              <Gauge {...GaugeConfig} percent={realTimeStat.vmUsedPercent} />
+              <Gauge {...GaugeConfig} percent={realTimeStat.v} />
               <div style={{textAlign:'center', marginTop:'1em'}}><Tag color='lime'>VM</Tag></div>
             </Card>
           </Col>
           <Col style={{ width: 200, marginLeft: '1em', padding:'1em' }}>
             <Card>
-              <Gauge {...GaugeConfig} percent={realTimeStat.dishPercent} />
+              <Gauge {...GaugeConfig} percent={realTimeStat.d} />
               <div style={{textAlign:'center', marginTop:'1em'}}><Tag color='lime'>Dish</Tag></div>
             </Card>
           </Col>
           <Col style={{ width: 200, marginLeft: '1em', padding:'1em' }}>
             <Card>
-              <Gauge {...GaugeConfig} percent={realTimeStat.avgLoad} />
+              <Gauge {...GaugeConfig} percent={realTimeStat.a} />
               <div style={{textAlign:'center', marginTop:'1em'}}><Tag color='lime'>Load</Tag></div>
             </Card>
           </Col>
         </Row>
 
-        <Text type='success'>CPU负载 (%)</Text>
-        <Line {...LineConfig} yField='cpuPercent'/>
-        <Text type='success'>内存使用量 (%)</Text>
-        <Line {...LineConfig} yField='vmUsedPercent' />
-        <Text type='success'>系统负载</Text>
-        <Line {...LineConfig} yField='avgLoad' />
-        <Text type='success'>进程总数</Text>
-        <Line {...LineConfig} yField='procsTotal' />
-        <Text type='success'>磁盘使用量 (%)</Text>
-        <Line {...LineConfig} yField='dishPercent' />
+        <Text type='success' max={100}>CPU负载 (%)</Text>
+        <Line {...LineConfig} yField='c'/>
+        <Text type='success' max={100}>内存使用量 (%)</Text>
+        <Line {...LineConfig} yField='v' />
+        <Text type='success'>系统负载 (%)</Text>
+        <Line {...LineConfig} yField='a' />
+        <Text type='success'>进程总数 (%)</Text>
+        <Line {...LineConfig} yField='p' />
+        <Text type='success' max={100}>磁盘使用量 (%)</Text>
+        <Line {...LineConfig} yField='d' />
       </Space>
     )
   }
