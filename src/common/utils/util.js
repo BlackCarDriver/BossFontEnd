@@ -32,6 +32,69 @@ export const Inputlayout = {
 
 // ******************** Formater ********************
 
+// 格式化时间间隔
+// 支持传入10位或13位毫秒数，如 1587367194536,"1587367194"
+// 支持传入日期格式，如 "2020/4/20 15:31:18"
+function getTimeDistance (time) {
+  if (typeof time == 'number' || Number(time) == time) {
+    if (String(time).length == 10) {
+      time = Number(time) * 1000
+    } else if (String(time).length == 13) {
+      time = Number(time)
+    } else {
+      console.log('时间格式错误')
+      return time
+    }
+  } else {
+    if (typeof time == 'string' && time.split(' ').length == 2 && time.split(/[- : /]/).length == 6) {
+      time = new Date(time.replace(/-/g, '/')).getTime()
+    } else {
+      console.log('时间格式错误')
+      return time
+    }
+  }
+  // 处理之后的time为13位数字格式的毫秒数
+  let dateNow = new Date()
+  let dateTime = new Date(time)
+  let distance = dateNow.getTime() - time
+
+  var days = parseInt(distance / (1000 * 60 * 60 * 24))
+  if (days == 1) {
+    return '昨天'
+  } else if (days > 1 && days < 4) {
+    return days + '天前'
+  } else if (days > 3) {
+    // 超过3天的，返回日期，如 2018-12-05
+    // 如果是今年的，就省去年份，返回 12-05
+    let year = dateTime.getFullYear()
+    let month = dateTime.getMonth() + 1
+    if (month < 10) {
+      month = '0' + month
+    }
+    let day = dateTime.getDate()
+    if (day < 10) {
+      day = '0' + day
+    }
+    if (dateNow.getFullYear() == year) {
+      return month + '-' + day
+    } else {
+      return year + '-' + month + '-' + day
+    }
+  }
+
+  let hours = parseInt(distance % (1000 * 60 * 60 * 24) / (1000 * 60 * 60))
+  if (hours > 0) {
+    return hours + '小时前'
+  }
+
+  let minutes = parseInt(distance % (1000 * 60 * 60) / (1000 * 60))
+
+  if (minutes > 0) {
+    return minutes + '分钟前'
+  }
+  return '刚刚'
+}
+
 // 格式化时间, 单位为秒
 export function timeFormater (time, style = 0) {
   if (typeof time !== 'number') {
@@ -51,6 +114,8 @@ export function timeFormater (time, style = 0) {
     return moment(time * 1000).format('YYYY年MM月DD日HH:mm:ss')
   case 5:
     return moment(time * 1000).format('HH:mm:ss')
+  case 6:
+    return getTimeDistance(time * 1000)
   }
   console.error('timeformater get invalid style: ', style)
   return '?' + time

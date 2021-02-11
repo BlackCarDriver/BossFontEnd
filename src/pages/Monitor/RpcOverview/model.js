@@ -15,26 +15,22 @@ export default {
 
   effects: {
     * queryList ({ params }, { select, call, put }) {
-      // const list = [
-      //   {name:'codeRunner',
+      // const res = [
+      //   {name:'docker',
       //     'counter':123123,
       //     'members':[
-      //       {tag:'localhost1',url:'127.0.0.1:83',status:-99,counter:1,regTime:1612616193,lastTime:0, failed: 1},
-      //       {tag:'localhost1',url:'127.0.0.1:83',status:-99,counter:123424,regTime:1612616193,lastTime:0, failed: 12},
-      //       {tag:'localhost1',url:'127.0.0.1:83',status:-99,counter:23423,regTime:1612616193,lastTime:0, failed: 1},
-      //       {tag:'localhost1',url:'127.0.0.1:83',status:-99,counter:22,regTime:1612616193,lastTime:0, failed: 1},
-      //       {tag:'localhost1',url:'127.0.0.1:83',status:-99,counter:3,regTime:1612616193,lastTime:0, failed: 1},
-      //       {tag:'localhost1',url:'127.0.0.1:83',status:-99,counter:234,regTime:1612616193,lastTime:0, failed: 1},
+      //       {tag:'win10',url:'127.0.0.1:83',status:0,counter:3,regTime:1612616193,lastTime:1612616193, failed: 1},
+      //       {tag:'linux',url:'127.0.0.1:83',status:2,counter:123424,regTime:1612616193,lastTime:1612616193, failed: 12},
       //     ]},
-      //   {name:'codeRunner2',
+      //   {name:'killer',
       //     'counter':2222,
       //     'members':[
-      //       {tag:'localhost1',url:'127.0.0.1:83',status:-123,counter:0,regTime:1612616193,lastTime:0},
-      //       {tag:'localhost1',url:'127.0.0.1:83',status:0,counter:0,regTime:1612616193,lastTime:0},
-      //       {tag:'localhost1',url:'127.0.0.1:83',status:0,counter:0,regTime:1612616193,lastTime:0},
+      //       {tag:'pcwind..',url:'127.0.0.1:83',status:-1,counter:999,regTime:1612616193,lastTime:1613006723, failed: 1},
+      //       {tag:'localhost',url:'127.0.0.1:83',status:-9,counter:87,regTime:1612616193,lastTime:1612616193, failed: 1},
+      //       {tag:'localhost',url:'127.0.0.1:83',status:-123,counter:6456456,regTime:1612616193,lastTime:1613006523, failed: 1},
       //     ]}
       // ]
-      let res = yield call(bossAPI, '/monitor/rpcOverview')
+      let res = yield call(bossAPI, '/monitor/rpc/overview')
       if (!res) {
         return
       }
@@ -42,6 +38,16 @@ export default {
         type: 'updateState',
         payload: { name: 'displayList', newValue: res }
       })
+    },
+    *s2sNodeOpe ({ payload }, { select, call, put }) {
+      const { params, CBFunc } = payload
+      console.debug('CBFunc=',CBFunc)
+      let res = yield call(bossAPI, '/monitor/rpc/ope', params)
+      if (!res) {
+        CBFunc(false)
+        return
+      }
+      CBFunc(true)
     }
   }
 }
