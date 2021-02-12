@@ -17,6 +17,7 @@ import {
   PictureOutlined,
   PaperClipOutlined,
   ShareAltOutlined,
+  BugOutlined,
 } from '@ant-design/icons'
 
 
@@ -37,6 +38,7 @@ const iconMap = new Map(
     ['PictureOutlined', <PictureOutlined />],
     ['PaperClipOutlined', <PaperClipOutlined />],
     ['ShareAltOutlined', <ShareAltOutlined />],
+    ['BugOutlined', <BugOutlined />],
   ]
 )
 
