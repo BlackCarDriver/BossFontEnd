@@ -116,6 +116,8 @@ export function timeFormater (time, style = 0) {
     return moment(time * 1000).format('HH:mm:ss')
   case 6:
     return getTimeDistance(time * 1000)
+  case 7:
+    return moment(time * 1000).format('MM-DD:HH')
   }
   console.error('timeformater get invalid style: ', style)
   return '?' + time

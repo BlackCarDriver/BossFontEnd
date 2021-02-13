@@ -28,7 +28,8 @@ function asyncComponent(config) {
     }
 
     componentDidMount() {
-      this.mounted = true;
+      window.isInit = true
+      this.mounted = true
     }
 
     componentWillUnmount() {

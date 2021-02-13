@@ -3,7 +3,7 @@ import { timeFormater } from '../../../common/utils/util'
 export default {
   namespace: 'serverBurden',
   state: {
-    statType:'short',
+    statType:'short', // [short|long]
     keepRefresh: true,
     sysStatInfo: [],
     realTimeStat: {
@@ -35,7 +35,7 @@ export default {
       }
       for (let i = 0; i < res.length; i++){
         res[i].key = i,
-        res[i].time = timeFormater(res[i].t, 5)
+        res[i].time = timeFormater(res[i].t, statType == 'short' ? 5 : 7)
       }
       yield put({
         type: 'updateState',

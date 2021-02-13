@@ -3,14 +3,16 @@ import React, { Component } from 'react'
 import { Menu, Layout, Switch, Card, Spin } from 'antd'
 import { getIconByName } from '../common/utils/antIcon'
 import { Link } from 'dva/router'
+import { trySeveralTimes } from '../common/utils/util'
 
 class Wrapper extends Component {
     componentDidMount = () => {
       this.initMeanuData()
       this.initcarTitle()
-      console.debug('props=', this.props)
-      console.debug('history2=', this.props.history)
+      this.monitorIfLoading()
+      console.debug('wrapper init...')
     }
+
     state = {
       theme: 'dark',
       current: '1',
@@ -18,6 +20,7 @@ class Wrapper extends Component {
       carTitle: 'Welcome',
       openMenu: '', // 默认展开的菜单
       selectMenu: '', // 默认选中的菜单
+      loading: true,
     }
 
     // 改变导航栏风格
@@ -57,6 +60,19 @@ class Wrapper extends Component {
       }
     }
 
+    // 实时监听和更新组件加载状态
+    monitorIfLoading = () => {
+      this.setState({loading: true})
+      let checkIfInit = () => {
+        if (window.isInit) {
+          this.setState({loading: false})
+          return true
+        }
+        return false
+      }
+      trySeveralTimes(checkIfInit, 500, 120)
+    }
+
     // 动态创建导航栏菜单
     creatMeamBar = () => {
       console.debug('creatMeamBar call')
@@ -77,7 +93,7 @@ class Wrapper extends Component {
                     { item.children.map((subitem) => {
                       return(
                         <Menu.Item key={subitem.path} title={subitem.name} icon={getIconByName(subitem.icon)} >
-                          <Link to={subitem.path} onClick={() => {this.setState({carTitle: subitem.desc})}}>{subitem.name}</Link>
+                          <Link to={subitem.path} onClick={() => {this.setState({carTitle: subitem.desc}), this.monitorIfLoading()}}>{subitem.name}</Link>
                         </Menu.Item>
                       )
                     }) }
@@ -92,6 +108,9 @@ class Wrapper extends Component {
 
     render () {
       const { Content, Footer, Sider } = Layout
+      const { loading } = this.state
+      console.debug('this.windows', window)
+      window.isInit = false
       return (
         <div>
           <Layout>
@@ -106,7 +125,7 @@ class Wrapper extends Component {
               <Content>
                 <div style={styleContent}>
                   <Card title={this.state.carTitle} bordered={false} headStyle={{font: 'left' ,height:'3em'}}>
-                    <Spin spinning={this.props.children == null}>
+                    <Spin spinning={loading}>
                       {this.props.children}
                     </Spin>
                   </Card>

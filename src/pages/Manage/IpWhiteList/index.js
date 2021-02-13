@@ -17,7 +17,6 @@ class IpWhiteList extends Component {
     selectItem: {ip:'', tag:''},
   }
   componentDidMount = () => {
-    console.debug('init success')
     this.refreshTagInfoList()
   }
 
@@ -66,7 +65,6 @@ class IpWhiteList extends Component {
   }
   // 显示设置标记模态框
   onShowModel = (record) => {
-    console.debug('this.ref=', this.formRef)
     this.setState({modelvisible:true, selectItem: record})
     let tryFunc = () => {
       if (this.formRef) {
@@ -80,7 +78,6 @@ class IpWhiteList extends Component {
   }
   // 表项操作html代码
   tableOpeHtml = (record) => {
-    console.debug(record)
     let tipStr = `确定要将这项标记删除吗? (ip=${record.ip} tag=${record.tag})`
     return (
       <>

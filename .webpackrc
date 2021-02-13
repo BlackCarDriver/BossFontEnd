@@ -12,7 +12,7 @@
 },
 "proxy": {
   "/bsapi": {
-    "target": "http://localhost:80/bsapi/",
+    "target": "http://www.blackcar.top/bsapi/",
     "changeOrigin": true,
     "pathRewrite": { "^/bsapi" : "" }
   },
