@@ -3,7 +3,7 @@ import { bossAPI } from '../../../common/services/common'
 export default {
   namespace: 'rpcTest', // 要改
   state: {
-    testResult: '',
+    testResult: {stdErr:'', stdOut:''},
   },
 
   reducers: {
@@ -16,10 +16,13 @@ export default {
   effects: {
     * sendTestReq ({ payload }, {select, call, put}) {
       console.debug('payload=', payload)
-      let res = yield call(bossAPI, payload.url, payload)
+      const { value, callbackFunc } = payload
+      let res = yield call(bossAPI, value.url, value)
       if (!res) {
+        callbackFunc(false)
         return
       }
+      callbackFunc(true)
       yield put({
         type: 'updateState',
         payload: { name: 'testResult', newValue: res }

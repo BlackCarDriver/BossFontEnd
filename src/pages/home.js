@@ -8,6 +8,7 @@ class NotFound extends Component {
   preViewDemo = `http://${this.host}/static/preview/target.jpg`
 
   render () {
+    window.isInit = true
   	return (
       <div>
         <Row>

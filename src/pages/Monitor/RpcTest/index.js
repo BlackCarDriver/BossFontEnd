@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Form, Button, Input, Row, Space, modelTitle } from 'antd'
+import { Form, Button, Input, Space, Card, message, Typography } from 'antd'
+import { goDemoCode, goDemoInput } from './demoCode'
 import Modal from 'antd/lib/modal/Modal'
 
 const namespace = 'rpcTest'
@@ -17,9 +18,9 @@ class RpcTest extends Component {
   }
 
   testDemo = [
-    {title: 'C++编译测试', url: codeRunnerUrl, tag: 'codeRunner_buildCpp', str1: '...', num1: '22'},
-    {title: 'Go编译测试', url: codeRunnerUrl, tag: 'codeRunner_buildGo', str2: '..sss.', num3: '223'},
-    {title: '程序执行测试', url: codeRunnerUrl, tag: 'codeRunner_run', str3: '...', num2: '22'},
+    {title: 'Go编译测试', url: codeRunnerUrl, tag: 'codeRunner_buildGo', str1: goDemoCode, str2: goDemoInput},
+    {title: 'C++编译测试', url: codeRunnerUrl, tag: 'codeRunner_buildCpp', str2: '..sss.', num3: '223'},
+    {title: '程序执行测试', url: codeRunnerUrl, tag: 'codeRunner_run', str1: 'GO', str2: '9734d8b029', str3: goDemoInput },
   ]
 
   componentDidMount = () => {
@@ -53,14 +54,26 @@ class RpcTest extends Component {
   }
   // 表单提交:调用model发送测试请求
   sendTestReq = (value) => {
-    console.debug(value)
-    this.callModel('sendTestReq', value)
+    console.debug('value=', value)
+    this.callModel('sendTestReq', {
+      value: value,
+      callbackFunc: (success) => {
+        if (success){
+          message.success('test pass')
+          this.setState({modelVisable: false})
+        }else{
+          message.error('test failed')
+        }
+      }
+    })
   }
 
   render () {
     const { modelVisable, target, modelTitle } = this.state
+    const { testResult } = this.props.model
+    const { Text, Paragraph } = Typography
     const { TextArea } = Input
-    console.debug('target=', target)
+
     return (
       <div>
         <Space direction='vertical'>
@@ -69,6 +82,14 @@ class RpcTest extends Component {
               {item.title}
             </Button>})
           }
+          <Card title='测试结果' hidden={testResult == {}} size='small'>
+            <Paragraph>
+              <Text code>stdErr</Text><br />
+              <TextArea style={{width:'40em', margin:'5px 0'}} value={testResult.stdErr} hidden={testResult.stdErr == ''} rows={4} />
+              <Text code>stdOut</Text><br />
+              <TextArea style={{width:'40em', margin:'5px 0'}} value={testResult.stdOut} hidden={testResult.stdOut == ''} rows={4} />
+            </Paragraph>
+          </Card>
         </Space>
 
         <Modal visible={modelVisable}
