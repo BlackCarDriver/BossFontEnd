@@ -17,7 +17,7 @@ export default {
     * sendTestReq ({ payload }, {select, call, put}) {
       console.debug('payload=', payload)
       const { value, callbackFunc } = payload
-      let res = yield call(bossAPI, value.url, value)
+      let res = yield call(bossAPI, value.url, value, true)
       if (!res) {
         callbackFunc(false)
         return

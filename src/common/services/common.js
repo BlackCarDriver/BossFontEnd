@@ -2,13 +2,19 @@ import request from '../utils/request'
 import { message } from 'antd'
 import fetch from 'dva/fetch'
 
-export async function bossAPI (api, params) {
+export async function bossAPI (api, params = null, post = false) {
   let url = '/bsapi' + api
-  if (params) {
+  if (!post && params) {
     url += '?' + urlEncode(params)
   }
-  console.debug('url=', url)
-  const resp = await request(url)
+  const resp = await request(url, {
+    method: post ? 'post' : 'get',
+    body: post ? JSON.stringify({...params}) : null,
+    headers:new Headers({
+      'Content-Type': 'application/json;charset=UTF-8'
+    })
+  })
+  console.debug(resp)
   const { data } = resp
   if (data == undefined) {
     message.warn('unexpect response, api=' + api, 5)
@@ -22,7 +28,6 @@ export async function bossAPI (api, params) {
   // 一些正常响应没有payLoad，为了让返回值区别是否成功，这时用1代替null
   return payLoad == null ? 1 : payLoad
 }
-
 
 let urlEncode = function (param, key, encode) {
   if(param == null) return ''
