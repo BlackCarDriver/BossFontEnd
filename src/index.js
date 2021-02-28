@@ -27,9 +27,13 @@ let menuList = [{
   title: '服务器监控', icon: 'DashboardOutlined',
   menuItemList: [
     { uri: '/monitor/serverBurden', title:  '系统负载监控' , icon:'DashboardOutlined'},
-    { uri: '/monitor/rpcOverview', title:  'RPC服务状况' , icon:'ShareAltOutlined'},
-    { uri: '/monitor/rpcTest', title:  'RPC接口测试' , icon:'BugOutlined'},
     { uri: '/monitor/serverLog', title:  '服务端日志', icon:'FileTextOutlined' },
+  ]
+},{
+  title: '毕设项目', icon: 'DesktopOutlined',
+  menuItemList: [
+    { uri: '/codeMaster/rpcOverview', title:  'RPC服务状况' , icon:'ShareAltOutlined'},
+    { uri: '/codeMaster/rpcTest', title:  'RPC接口测试' , icon:'BugOutlined'},
   ]
 },{
   title: '其他工具', icon: 'CodeSandboxOutlined',

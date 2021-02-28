@@ -10,18 +10,21 @@ const namespace = 'serverBurden'
   model: serverBurden
 }))
 
+
 class ServerBurden extends Component {
-  state = {
-    title: 'SUCCESS'
+  componentWillUnmount = () => {
+    clearTimeout(this.timer)
   }
+  timer = {};
   componentDidMount = () => {
     let autoRefresh = () => { // 每隔10s刷新数据
       const {keepRefresh} = this.props.model
+      console.debug('keepRefresh2', this.props)
       if (!keepRefresh) {
         return
       }
       this.callModel('queryList', {})
-      setTimeout(() => {
+      this.timer = setTimeout(() => {
         autoRefresh()
       }, 10000)
     }

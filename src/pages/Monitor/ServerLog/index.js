@@ -33,7 +33,6 @@ class ServerLog extends Component {
 
   createText = (logs) => {
     if(Array.isArray(logs)){
-      console.debug('isArray')
       return logs.map((row,i) => {return <p key={i}>{row}</p>})
     }else{
       console.debug('is not Array ')

@@ -86,10 +86,11 @@ class RpcTest extends Component {
               {item.title}
             </Button>})
           }
-          <Card title='测试结果' hidden={testResult == {}} size='small'>
+          <Card title='测试结果' hidden={testResult.stdErr == '' && testResult.stdOut == ''} size='small'>
             <Paragraph>
               <Text code hidden={testResult.stdErr == ''}>stdErr</Text><br />
               <TextArea style={{width:'40em', margin:'5px 0'}} value={testResult.stdErr} hidden={testResult.stdErr == ''} rows={4} />
+              <br />
               <Text code hidden={testResult.stdOut == ''}>stdOut</Text><br />
               <TextArea style={{width:'40em', margin:'5px 0'}} value={testResult.stdOut} hidden={testResult.stdOut == ''} rows={4} />
             </Paragraph>
@@ -97,6 +98,7 @@ class RpcTest extends Component {
         </Space>
 
         <Modal visible={modelVisable}
+          width={1000}
           onCancel={() => this.setState({modelVisable: false})}
           onOk={() => {this.onComfirmTest()}}
           okText='测试' cancelText='取消' title={modelTitle}
@@ -105,7 +107,7 @@ class RpcTest extends Component {
             <Form onFinish={(v, v2) => this.sendTestReq(v, v2)}
               initialValues={{str1:'', str2:'', str3:'', num1:0, num2:0, num3:0}}
               ref={form => { this.formRef = form }}
-              style={{width: '100%'}}
+              style={{width: '%100'}}
               labelCol={{span: 3}}
             >
               <Form.Item label='Url' name='url'>
@@ -115,13 +117,13 @@ class RpcTest extends Component {
                 <Input disabled/>
               </Form.Item>
               <Form.Item label='Str1' name='str1' hidden={target.str1 == null}>
-                <TextArea rows={4} />
+                <TextArea autoSize={{ minRows: 1, maxRows: 50 }} />
               </Form.Item>
               <Form.Item label='Str2' name='str2' hidden={target.str2 == null}>
-                <TextArea rows={4} />
+                <TextArea autoSize={{ minRows: 1, maxRows: 50 }} />
               </Form.Item>
               <Form.Item label='Str3' name='str3' hidden={target.str3 == null}>
-                <TextArea rows={4} />
+                <TextArea autoSize={{ minRows: 1, maxRows: 50 }} />
               </Form.Item>
               <Form.Item label='Num1' name='num1' hidden={target.num1 == null}>
                 <Input />

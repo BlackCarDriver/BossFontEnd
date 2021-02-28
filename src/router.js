@@ -32,7 +32,6 @@ function transformRoute (item, index, app, parentPath = '', desc = '') {
   const formatedUri = formatUri(uri)
   const path = parentPath + '/' + (formatedUri.charAt(0) === '/' ? formatedUri.substr(1) : formatedUri) // => /0/server_deubg/server_debug_time_control
   const componentPath = `./pages/${snake2Pascal(formatUri(uri))}/`
-  console.debug('componentPath=', path)
   return {
     name: title,
     desc: desc + ' > ' + title,
@@ -44,7 +43,6 @@ function transformRoute (item, index, app, parentPath = '', desc = '') {
       models: () => [
         (async () => {
           try {
-            console.debug('load model: ', componentPath + 'model.js')
             return await import(componentPath + 'model.js')
           } catch (err) {
             console.log('can not import', componentPath)
@@ -54,7 +52,6 @@ function transformRoute (item, index, app, parentPath = '', desc = '') {
       component: async () => {
         let promiseComponent
         try {
-          console.debug('load index: ', componentPath + 'index.js')
           promiseComponent = await import(componentPath + 'index.js')
         } catch (err) {
           console.error('load component fail: error=', err)

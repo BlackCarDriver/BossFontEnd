@@ -10,7 +10,6 @@ class Wrapper extends Component {
       this.initMeanuData()
       this.initcarTitle()
       this.monitorIfLoading()
-      console.debug('wrapper init...')
     }
 
     state = {
@@ -52,7 +51,6 @@ class Wrapper extends Component {
     // 更新或初始化标题，展开和选中的菜单
     initcarTitle = () => {
       const { pathname } = this.props.location
-      console.debug('pathname=', pathname)
       let eles = pathname.split('/')
       if (eles.length >= 2) {
         this.setState({openMenu: eles[1]})
@@ -75,10 +73,8 @@ class Wrapper extends Component {
 
     // 动态创建导航栏菜单
     creatMeamBar = () => {
-      console.debug('creatMeamBar call')
       let { SubMenu } = Menu
       const {menuData, openMenu, selectMenu, theme} = this.state
-      console.debug('meanData=', menuData)
       let key = 0
       return(
         <Menu key={openMenu} theme={theme} mode='inline' multiple={false} defaultOpenKeys={[openMenu]} defaultSelectedKeys={[selectMenu]}>
@@ -109,7 +105,6 @@ class Wrapper extends Component {
     render () {
       const { Content, Footer, Sider } = Layout
       const { loading } = this.state
-      console.debug('this.windows', window)
       window.isInit = false
       return (
         <div>

@@ -13,10 +13,12 @@ class NotFound extends Component {
       <div>
         <Row>
           <Col span={8}>
-            <Card type='inner' title='CallDriver 应用' style={{width:'90%'}}>
+            <Card type='inner' title='其他应用前端' style={{width:'90%'}}>
               <a href='/callDriver' target='null'>CallDriver - guest</a>
               <Divider />
               <a href='/callDriver/boss' target='null'>CallDriver - adminstrator</a>
+              <Divider />
+              <a href='/codeMaster' target='null'>CodeMaster</a>
             </Card>
           </Col>
           <Col span={8}>
