@@ -22,6 +22,7 @@ let menuList = [{
   title: '服务端配置', icon: 'SettingOutlined',
   menuItemList:[
     {uri: '/manage/ipWhiteList', title: 'IP白名单配置', icon: 'PartitionOutlined'},
+    {uri: '/manage/systemSetting', title: '开关设置', icon: 'BulbOutlined'},
   ]
 },{
   title: '服务器监控', icon: 'DashboardOutlined',

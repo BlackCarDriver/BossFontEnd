@@ -32,6 +32,7 @@ function transformRoute (item, index, app, parentPath = '', desc = '') {
   const formatedUri = formatUri(uri)
   const path = parentPath + '/' + (formatedUri.charAt(0) === '/' ? formatedUri.substr(1) : formatedUri) // => /0/server_deubg/server_debug_time_control
   const componentPath = `./pages/${snake2Pascal(formatUri(uri))}/`
+  // console.debug('componentPath=', componentPath)
   return {
     name: title,
     desc: desc + ' > ' + title,

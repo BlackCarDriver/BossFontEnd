@@ -19,6 +19,7 @@ import {
   ShareAltOutlined,
   BugOutlined,
   DesktopOutlined,
+  BulbOutlined,
 } from '@ant-design/icons'
 
 
@@ -41,6 +42,7 @@ const iconMap = new Map(
     ['ShareAltOutlined', <ShareAltOutlined />],
     ['BugOutlined', <BugOutlined />],
     ['DesktopOutlined', <DesktopOutlined />],
+    ['BulbOutlined', <BulbOutlined />],
   ]
 )
 
